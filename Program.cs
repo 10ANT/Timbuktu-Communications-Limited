@@ -16,9 +16,10 @@ public class TimbuktuCom
 
 
         Console.WriteLine(customer.CableTeleOnly); 
+        CableTeleBill newcu = new CableTeleBill();
 
-
-
+        newcu.currentPaymtDate = new DateTime(2023, 5, 6);
+        Console.WriteLine(newcu.currentPaymtDate);
 
     }
 }

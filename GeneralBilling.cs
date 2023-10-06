@@ -9,7 +9,46 @@ namespace Timbuktu_Communications_Limited
 
     public class GeneralBilling
     {
-        public double CableTeleOnly = 2050.76;
+		const int GCT = 25;
+
+		public int accNum { set; get; } = 0;
+		public string accHolderName {set; get; } = string.Empty;
+		public string accHolderAddress = " ";
+        public int serviceType { set; get; } = 0;
+        public double previousBalance { set; get; } = 0;
+        public double paymtonPrevBal { set; get; } = 0;
+
+        //DateTime currentPaymentDueDate = new DateTime();
+		public DateTime currentPaymtDate { get; set; }
+
+		public double balBroughtForward()
+        {
+            return (previousBalance - paymtonPrevBal);
+        }
+
+
+		public void getAccHolderAddress()
+		{
+			// Variable to store the address as a single string
+			string accHolderAddress;
+
+			// Prompt the user to enter the address details
+			Console.WriteLine("Enter Address Details:");
+			Console.Write("Street: ");
+			string street = Console.ReadLine();
+			Console.Write("City: ");
+			string city = Console.ReadLine();
+			Console.Write("Parish: ");
+			string parish = Console.ReadLine();
+			Console.Write("Postal Code: ");
+			string postalCode = Console.ReadLine();
+
+			// Combine the address components into a single string
+			accHolderAddress = $"{street}, {city}, {parish} {postalCode}";
+		}
+
+
+		public double CableTeleOnly = 2050.76;
         public double DigitalLandOnly = 1210.50;
         public double InternetServOnly = 4999.99;
 
@@ -43,4 +82,18 @@ namespace Timbuktu_Communications_Limited
 
 
     }
+    public class CableTeleBill : GeneralBilling
+    {
+
+    }
+    public class DigitalLandBill : GeneralBilling
+    {
+
+    }
+	public class InternetServBill : GeneralBilling
+	{
+
+	}
+
+
 }
