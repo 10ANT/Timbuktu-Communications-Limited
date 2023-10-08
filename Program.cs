@@ -6,8 +6,9 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class TimbuktuCom
 {
-	public static GeneralBilling customer1 = null; // Use the common base class
+	public static GeneralBilling customer1 = null; // Creating the common base class instance tbu by derived classes
 
+	//Main Method
 	private static void Main(string[] args)
     {
 		Console.WriteLine("\x1b[1mWelcome to Timbuktu's Bill Processing Platform \x1b[0m");
@@ -28,65 +29,291 @@ public class TimbuktuCom
 				
 				customer1 = new CableTeleBill();
 
-
+				//Collection of Customer Details 
 				customer1.getAccHolderDetails();
 				customer1.getAccHolderAddress();
 
+				//Collection of Previous Balance and Payment
 				customer1.collectPreviousBalandPayment();
 
-                Console.WriteLine();
+				//Calculation of the Balance Brought Forward
+				customer1.balBroughtForward();
 
-               // dateCollectandParsePreviouspaymt();
-				//dateCollectandParseCurDuepaymt();
+				Console.WriteLine();
 
+				//Collection and Parsing of some Previous Dates of Due and Payment
+				dateCollectandPreviousDueDate();
+				dateCollectandParsePreviouspaymt();
+
+				//Collecting and Parsing Current Payment Date 
+				Console.WriteLine();
+				dateCollectandParseCurDuepaymt();
+
+				//Exception Handling of Invalid Date
+				while (customer1.currentPaymtDueDate < customer1.previousDueDate) {
+				    Console.WriteLine("\nCode 45: Invalid Date Entry, Please Try Again!");
+					dateCollectandParseCurDuepaymt();
+				}
+				//Calcution of Late Fees or Early Payment Discounts
 				customer1.earlyPaymtDiscount();
 				customer1.latePaymtFees();
 
-
+				//Calling some Calcution Functions
 				customer1.lateorearlystatus();
 				customer1.totAmtDuteBefTax();
 
-				//Outputs
-				Console.WriteLine();
+                //OUTPUTS
+                Console.WriteLine("\n\x1b[1m- - - Bill Details - - -\x1b[0m");
+                Console.WriteLine();
 
-				Console.WriteLine("Your Account Number is: "+customer1.accNum+"");
+				Console.WriteLine("Your Account Number is: " + customer1.accNum+"");
 				Console.WriteLine("Your Account Holder Name is: " + customer1.accFirst_Lastconcat + "");
 				Console.WriteLine("Your Account Holder Address is: " + customer1.accHolderAddress + "");
-				//Specific Service Type 
+				//Specific Service Type
 				Console.WriteLine("Your Account Service type is: Cable Television Only");
-				Console.WriteLine("Your Previous Balance is: " + customer1.altprevBal.ToString("F2"));
-				Console.WriteLine("Your Payment on the Previous Balance is: " + customer1.altpaymtonPrevBal.ToString("F2"));
+				Console.WriteLine("Your Previous Balance is: $" + customer1.altprevBal.ToString("F2"));
+				Console.WriteLine("Your Payment on the Previous Balance is: $" + customer1.altpaymtonPrevBal.ToString("F2"));
+				Console.WriteLine("Your Balance Brought Forward is: $" + customer1.varBalBroughtForward.ToString("F2"));
+				//Specific Serv charge
+				Console.WriteLine("Your Current Service Charge is: $" + customer1.CableTeleOnly.ToString("F2"));
+				Console.WriteLine("Your Early Payment Discount is: $" + customer1.varearlyPaymtDiscount.ToString("F2"));
+				Console.WriteLine("Your Late Payment Fee is: $" + customer1.varlatePaymtFees.ToString("F2"));
+				Console.WriteLine("Your Total Current Charges are (Serv charge + Balance brought (+-) Discount/Fee: $" + customer1.vartotAmtDueBefTax.ToString("F2"));
+				Console.WriteLine("Your GCT is @25%: $" + customer1.GCTamt.ToString("F2"));
+				Console.WriteLine("Your Total Amount Due is: $" + customer1.vartotAmtDue.ToString("F2"));
+				Console.WriteLine();
+				Console.WriteLine("Your Previous Due Date is: " + customer1.previousDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Previous Payment Date is: " + customer1.previousPaymtDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Current Payment Date is: " + customer1.currentPaymtDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Thank you for you for choosing Timbuktu !");
 
-
-
-				Console.WriteLine($"${customer1.vartotAmtDueBefTax:0.00}");
-				Console.WriteLine(customer1.vartotAmtDue);
+				//Console.WriteLine($"${customer1.vartotAmtDueBefTax:0.00}");
+				//Console.WriteLine(customer1.vartotAmtDue);
 
 				break;
 			case 2:
 				customer1 = new DigitalLandBill();
+
+				//Collection of Customer Details 
+				customer1.getAccHolderDetails();
+				customer1.getAccHolderAddress();
+
+				//Collection of Previous Balance and Payment
+				customer1.collectPreviousBalandPayment();
+
+				//Calculation of the Balance Brought Forward
+				customer1.balBroughtForward();
+
+				Console.WriteLine();
+
+				//Collection and Parsing of some Previous Dates of Due and Payment
+				dateCollectandPreviousDueDate();
+				dateCollectandParsePreviouspaymt();
+
+				//Collecting and Parsing Current Payment Date 
+				Console.WriteLine();
+				dateCollectandParseCurDuepaymt();
+
+				//Exception Handling of Invalid Date
+				while (customer1.currentPaymtDueDate < customer1.previousDueDate)
+				{
+					Console.WriteLine("\nCode 45: Invalid Date Entry, Please Try Again!");
+					dateCollectandParseCurDuepaymt();
+				}
+				//Calcution of Late Fees or Early Payment Discounts
+				customer1.earlyPaymtDiscount();
+				customer1.latePaymtFees();
+
+				//Calling some Calcution Functions
+				customer1.lateorearlystatus();
 				customer1.totAmtDuteBefTax();
-				Console.WriteLine(customer1.vartotAmtDueBefTax);
-				Console.WriteLine(customer1.vartotAmtDue);
+
+				//OUTPUTS
+				Console.WriteLine("\n\x1b[1m- - - Bill Details - - -\x1b[0m");
+				Console.WriteLine();
+
+				Console.WriteLine("Your Account Number is: " + customer1.accNum + "");
+				Console.WriteLine("Your Account Holder Name is: " + customer1.accFirst_Lastconcat + "");
+				Console.WriteLine("Your Account Holder Address is: " + customer1.accHolderAddress + "");
+				//Specific Service Type
+				Console.WriteLine("Your Account Service type is: Digital Landline Only");
+				Console.WriteLine("Your Previous Balance is: $" + customer1.altprevBal.ToString("F2"));
+				Console.WriteLine("Your Payment on the Previous Balance is: $" + customer1.altpaymtonPrevBal.ToString("F2"));
+				Console.WriteLine("Your Balance Brought Forward is: $" + customer1.varBalBroughtForward.ToString("F2"));
+				//Specific Serv charge
+				Console.WriteLine("Your Current Service Charge is: $" + customer1.DigitalLandOnly.ToString("F2"));
+				Console.WriteLine("Your Early Payment Discount is: $" + customer1.varearlyPaymtDiscount.ToString("F2"));
+				Console.WriteLine("Your Late Payment Fee is: $" + customer1.varlatePaymtFees.ToString("F2"));
+				Console.WriteLine("Your Total Current Charges are (Serv charge + Balance brought (+-) Discount/Fee: $" + customer1.vartotAmtDueBefTax.ToString("F2"));
+				Console.WriteLine("Your GCT is @25%: $" + customer1.GCTamt.ToString("F2"));
+				Console.WriteLine("Your Total Amount Due is: $" + customer1.vartotAmtDue.ToString("F2"));
+				Console.WriteLine();
+				Console.WriteLine("Your Previous Due Date is: " + customer1.previousDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Previous Payment Date is: " + customer1.previousPaymtDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Current Payment Date is: " + customer1.currentPaymtDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Thank you for you for choosing Timbuktu !");
+
 
 				break;
 			case 3:
-			
 				customer1 = new InternetServBill();
-				break;
 
+				//Collection of Customer Details 
+				customer1.getAccHolderDetails();
+				customer1.getAccHolderAddress();
+
+				//Collection of Previous Balance and Payment
+				customer1.collectPreviousBalandPayment();
+
+				//Calculation of the Balance Brought Forward
+				customer1.balBroughtForward();
+
+				Console.WriteLine();
+
+				//Collection and Parsing of some Previous Dates of Due and Payment
+				dateCollectandPreviousDueDate();
+				dateCollectandParsePreviouspaymt();
+
+				//Collecting and Parsing Current Payment Date 
+				Console.WriteLine();
+				dateCollectandParseCurDuepaymt();
+
+				//Exception Handling of Invalid Date
+				while (customer1.currentPaymtDueDate < customer1.previousDueDate)
+				{
+					Console.WriteLine("\nCode 45: Invalid Date Entry, Please Try Again!");
+					dateCollectandParseCurDuepaymt();
+				}
+				//Calcution of Late Fees or Early Payment Discounts
+				customer1.earlyPaymtDiscount();
+				customer1.latePaymtFees();
+
+				//Calling some Calcution Functions
+				customer1.lateorearlystatus();
+				customer1.totAmtDuteBefTax();
+
+				//OUTPUTS
+				Console.WriteLine("\n\x1b[1m- - - Bill Details - - -\x1b[0m");
+				Console.WriteLine();
+
+				Console.WriteLine("Your Account Number is: " + customer1.accNum + "");
+				Console.WriteLine("Your Account Holder Name is: " + customer1.accFirst_Lastconcat + "");
+				Console.WriteLine("Your Account Holder Address is: " + customer1.accHolderAddress + "");
+				//Specific Service Type
+				Console.WriteLine("Your Account Service type is: Internet service Only");
+				Console.WriteLine("Your Previous Balance is: $" + customer1.altprevBal.ToString("F2"));
+				Console.WriteLine("Your Payment on the Previous Balance is: $" + customer1.altpaymtonPrevBal.ToString("F2"));
+				Console.WriteLine("Your Balance Brought Forward is: $" + customer1.varBalBroughtForward.ToString("F2"));
+				//Specific Serv charge
+				Console.WriteLine("Your Current Service Charge is: $" + customer1.InternetServOnly.ToString("F2"));
+				Console.WriteLine("Your Early Payment Discount is: $" + customer1.varearlyPaymtDiscount.ToString("F2"));
+				Console.WriteLine("Your Late Payment Fee is: $" + customer1.varlatePaymtFees.ToString("F2"));
+				Console.WriteLine("Your Total Current Charges are (Serv charge + Balance brought (+-) Discount/Fee: $" + customer1.vartotAmtDueBefTax.ToString("F2"));
+				Console.WriteLine("Your GCT is @25%: $" + customer1.GCTamt.ToString("F2"));
+				Console.WriteLine("Your Total Amount Due is: $" + customer1.vartotAmtDue.ToString("F2"));
+				Console.WriteLine();
+				Console.WriteLine("Your Previous Due Date is: " + customer1.previousDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Previous Payment Date is: " + customer1.previousPaymtDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Current Payment Date is: " + customer1.currentPaymtDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Thank you for you for choosing Timbuktu !");
+
+				break;
 			case 4:
+
+
 				customer1 = new BundledBill();
 				customer1.bundlebillselector();
 
-				customer1.totAmtDuteBefTax();
+				//Collection of Customer Details 
+				customer1.getAccHolderDetails();
+				customer1.getAccHolderAddress();
+
+				//Collection of Previous Balance and Payment
+				customer1.collectPreviousBalandPayment();
+
+				//Calculation of the Balance Brought Forward
+				customer1.balBroughtForward();
+
+				Console.WriteLine();
+
+				//Collection and Parsing of some Previous Dates of Due and Payment
+				dateCollectandPreviousDueDate();
+				dateCollectandParsePreviouspaymt();
+
+				//Collecting and Parsing Current Payment Date 
+				Console.WriteLine();
+				dateCollectandParseCurDuepaymt();
+
+				//Exception Handling of Invalid Date
+				while (customer1.currentPaymtDueDate < customer1.previousDueDate)
+				{
+					Console.WriteLine("\nCode 45: Invalid Date Entry, Please Try Again!");
+					dateCollectandParseCurDuepaymt();
+				}
+				//Calcution of Late Fees or Early Payment Discounts
+				customer1.earlyPaymtDiscount();
+				customer1.latePaymtFees();
+
+				//Calling some Calcution Functions ALTERED
+				customer1.lateorearlystatus();
+
+				customer1.totAmtDuteBefTax(customer1.bundlebillservcharge);
+
+				//OUTPUTS
+				Console.WriteLine("\n\x1b[1m- - - Bill Details - - -\x1b[0m");
+				Console.WriteLine();
+
+				Console.WriteLine("Your Account Number is: " + customer1.accNum + "");
+				Console.WriteLine("Your Account Holder Name is: " + customer1.accFirst_Lastconcat + "");
+				Console.WriteLine("Your Account Holder Address is: " + customer1.accHolderAddress + "");
+				//Specific Service Type
+				Console.WriteLine("Your Account Service type is: "+customer1.bundlebillservtype+"");
+				Console.WriteLine("Your Previous Balance is: $" + customer1.altprevBal.ToString("F2"));
+				Console.WriteLine("Your Payment on the Previous Balance is: $" + customer1.altpaymtonPrevBal.ToString("F2"));
+				Console.WriteLine("Your Balance Brought Forward is: $" + customer1.varBalBroughtForward.ToString("F2"));
+
+				//if state Service Charge Selector 
+				if (customer1.bundlebillservtype == "Cable Television + Digital Landline")
+				{
+					Console.WriteLine("Your Current Service Charge is: $" + customer1.CableandDigitalCharge().ToString("F2"));
+				}
+				else if(customer1.bundlebillservtype == "Cable Television + Internet service")
+				{
+					Console.WriteLine("Your Current Service Charge is: $" + customer1.CableandInterServCharge().ToString("F2"));
+				}
+				else if(customer1.bundlebillservtype == "Digital Landline + Internet service")
+				{
+					Console.WriteLine("Your Current Service Charge is: $" + customer1.DigiLineandInternetServCharge().ToString("F2"));
+				}
+				else if(customer1.bundlebillservtype == "Cable Television + Digital Landline + Internet service")
+				{
+					Console.WriteLine("Your Current Service Charge is: $" + customer1.Cable_DigiLine_andInternetServCharge().ToString("F2"));
+				}
+				
+
+				Console.WriteLine("Your Early Payment Discount is: $" + customer1.varearlyPaymtDiscount.ToString("F2"));
+				Console.WriteLine("Your Late Payment Fee is: $" + customer1.varlatePaymtFees.ToString("F2"));
+				Console.WriteLine("Your Total Current Charges are (Serv charge + Balance brought (+-) Discount/Fee: $" + customer1.vartotAmtDueBefTax.ToString("F2"));
+				Console.WriteLine("Your GCT is @25%: $" + customer1.GCTamt.ToString("F2"));
+				Console.WriteLine("Your Total Amount Due is: $" + customer1.vartotAmtDue.ToString("F2"));
+				Console.WriteLine();
+				Console.WriteLine("Your Previous Due Date is: " + customer1.previousDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Previous Payment Date is: " + customer1.previousPaymtDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Your Current Payment Date is: " + customer1.currentPaymtDueDate.ToString("MM/dd/yyyy") + "");
+				Console.WriteLine("Thank you for you for choosing Timbuktu !");
+
+
+
+
+				/*customer1.totAmtDuteBefTax();
 				Console.WriteLine(customer1.vartotAmtDueBefTax);
 				Console.WriteLine(customer1.vartotAmtDue);
                 Console.WriteLine(customer1.fCTandDLcharge);
+				*/
 
 
 
-                break;
+				break;
 
 			default:
 				Console.WriteLine("Invalid choice");

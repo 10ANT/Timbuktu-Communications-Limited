@@ -14,6 +14,10 @@ namespace Timbuktu_Communications_Limited
 		public double fCTandDLcharge =7;
 
 		public const double GCT = 0.25;
+		
+		public double bundlebillservcharge { set; get; }
+		public string bundlebillservtype { set; get; }
+
 
 		public string accNum { set; get; } = " ";
 		public string accHolderName {set; get; } = string.Empty;
@@ -22,6 +26,8 @@ namespace Timbuktu_Communications_Limited
         public int serviceType { set; get; } = 0;
         public static double previousBalance { set; get; } = 0;
         public static double paymtonPrevBal { set; get; } = 0;
+
+		public double	GCTamt = 0;
 
 		public double altprevBal = 0;
 		public double altpaymtonPrevBal = 0;
@@ -53,12 +59,9 @@ namespace Timbuktu_Communications_Limited
 	}
 
 
-		public static double balBroughtForward()
-        {
-            return (previousBalance - paymtonPrevBal);
-        }
+		
 
-        public double varBalBroughtForward = balBroughtForward();
+        public double varBalBroughtForward { set; get; }
 		public double vartotAmtDueBefTax = 0;
 		public double vartotAmtDue { set; get; }
 
@@ -67,7 +70,10 @@ namespace Timbuktu_Communications_Limited
 
 		public double varearlyPaymtDiscount;
 
-
+		public void balBroughtForward()
+		{
+			varBalBroughtForward = (previousBalance - paymtonPrevBal);
+		}
 		public void getAccHolderDetails()
 		{
            
@@ -112,7 +118,7 @@ namespace Timbuktu_Communications_Limited
 		}
 		public void latePaymtFees()
 		{
-			if (currentPaymtDueDate < previousPaymtDate)
+			if (previousDueDate < previousPaymtDate)
 			{
 				varlatePaymtFees= 250.0;
 			}
@@ -124,7 +130,7 @@ namespace Timbuktu_Communications_Limited
 		public void earlyPaymtDiscount()
 		{
 
-			if (previousPaymtDate < currentPaymtDueDate)
+			if (previousPaymtDate < previousDueDate)
 			{
 				varearlyPaymtDiscount = 250.0;
 			}
@@ -157,7 +163,7 @@ namespace Timbuktu_Communications_Limited
 		//servcharge
 		public double servcharge { set; get; }
 
-		public virtual void totAmtDuteBefTax( double servcharge)
+		public virtual void totAmtDuteBefTax(double servcharge)
         {
             vartotAmtDueBefTax= ((servcharge + varBalBroughtForward ) + varlatePaymtFees - varearlyPaymtDiscount);
         }
@@ -169,6 +175,8 @@ namespace Timbuktu_Communications_Limited
 
 		public double totAmountDue()
 		{
+			//GCT percentage Calculation
+			GCTamt = (vartotAmtDueBefTax * GCT);
 			return (vartotAmtDueBefTax - (vartotAmtDueBefTax * GCT));
 		}
 		//CHECK IF LOGIC WORKS OUT
@@ -248,13 +256,13 @@ namespace Timbuktu_Communications_Limited
 	}
 	public class BundledBill:GeneralBilling
 	{
-		public double bundlebillservcharge { set; get; }
+		
 		public override void bundlebillselector()
 		{
 			while (true)
 			{
 				Console.Clear();
-				Console.WriteLine("Menu:");
+				Console.WriteLine(" Bundle Bill Menu:");
 				Console.WriteLine("1. Cable Television + Digital Landline");
 				Console.WriteLine("2. Cable Television + Internet service ");
 				Console.WriteLine("3. Digital Landline + Internet service");
@@ -267,48 +275,40 @@ namespace Timbuktu_Communications_Limited
 				switch (choice)
 				{
 					case "1":
-						Console.WriteLine("You selected Option 1. Cable Television + Digital Landline");
+						Console.WriteLine("\nYou selected Option 1. Cable Television + Digital Landline");
 						// Perform action for Option 1
-						//settings a varib;le to dual serv charge
+						//settings a varible to dual serv charge
 						bundlebillservcharge = CableandDigitalCharge();
-						//calculating tot before tax
-						totAmtDuteBefTax(this.bundlebillservcharge);
-						//setting total moutn for corresponding serv charge
+						//sets Service type name
+						bundlebillservtype = "Cable Television + Digital Landline";
 
-						 fCTandDLcharge = totAmountDue();
 
 						break;
 					case "2":
-						Console.WriteLine("You selected Option 2.Cable Television + Internet service");
+						Console.WriteLine("\nYou selected Option 2.Cable Television + Internet service");
 						// Perform action for Option 2
 						//settings a varib;le to dual serv charge
 						bundlebillservcharge = CableandInterServCharge();
-						//calculating tot before tax
-						totAmtDuteBefTax(this.bundlebillservcharge);
-						//setting total moutn for corresponding serv charge
-						double fCTandIScharge = totAmountDue();
+						//sets Service type name
+						bundlebillservtype = "Cable Television + Internet service";
 
 						break;
 					case "3":
-						Console.WriteLine("You selected Option 3.Digital Landline + Internet service");
+						Console.WriteLine("\nYou selected Option 3.Digital Landline + Internet service");
 						// Perform action for Option 3
-						//settings a varib;le to dual serv charge
+						//settings a varible to dual serv charge
 						bundlebillservcharge = DigiLineandInternetServCharge();
-						//calculating tot before tax
-						totAmtDuteBefTax(this.bundlebillservcharge);
-						//setting total moutn for corresponding serv charge
-						double fDLandIScharge = totAmountDue();
+						//sets Service type name
+						bundlebillservtype = "Digital Landline + Internet service";
 
 						break;
 					case "4":
-						Console.WriteLine("You selected Option 4. Cable Television + Digital Landline + Internet service");
+						Console.WriteLine("\nYou selected Option 4. Cable Television + Digital Landline + Internet service");
 						// Perform action for Option 4
 						//settings a varib;le to dual serv charge
 						bundlebillservcharge = Cable_DigiLine_andInternetServCharge();
-						//calculating tot before tax
-						totAmtDuteBefTax(this.bundlebillservcharge);
-						//setting total moutn for corresponding serv charge
-						double fCT_DLandIScharge = totAmountDue();
+						//sets Service type name
+						bundlebillservtype = "Cable Television + Digital Landline + Internet service";
 
 						break;
 					case "5":
@@ -320,15 +320,15 @@ namespace Timbuktu_Communications_Limited
 						break;
 				}
 
-				Console.Write("Press any key to continue...");
+				Console.WriteLine("\nPress any key to continue...");
 				Console.ReadKey();
 				break;
 			}
 
 		}
-		public override void totAmtDuteBefTax()
+		public override void totAmtDuteBefTax(double bundleservc)
 		{
-			vartotAmtDueBefTax = ((bundlebillservcharge + varBalBroughtForward) + varlatePaymtFees - varearlyPaymtDiscount);
+			vartotAmtDueBefTax = ((bundleservc + varBalBroughtForward) + varlatePaymtFees - varearlyPaymtDiscount);
 			vartotAmtDue = totAmountDue();
 		}
 
