@@ -15,26 +15,42 @@ namespace Timbuktu_Communications_Limited
 
 		public const double GCT = 0.25;
 
-		public int accNum { set; get; } = 0;
+		public string accNum { set; get; } = " ";
 		public string accHolderName {set; get; } = string.Empty;
+		// Variable to store the address as a single string
 		public string accHolderAddress = " ";
         public int serviceType { set; get; } = 0;
         public static double previousBalance { set; get; } = 0;
         public static double paymtonPrevBal { set; get; } = 0;
 
-        //DateTime currentPaymentDueDate = new DateTime();
+		public double altprevBal = 0;
+		public double altpaymtonPrevBal = 0;
+
+		public  string accFirst_Lastconcat { set; get; } = string.Empty;
+
+		//DateTime currentPaymentDueDate = new DateTime();
 		public DateTime currentPaymtDueDate { get; set; }
 		public DateTime previousPaymtDate { get; set; }
 		public DateTime previousDueDate { get; set; }
 
 
-		//bundele bill selector
+		//bundele bill selector so i can be inherited and overidded
 		public virtual void bundlebillselector()
 		{
 
 		}
+		//
+		public void collectPreviousBalandPayment()
+		{
+            Console.Write("\nWhat is your Previous Balance: $");
+			previousBalance =Convert.ToDouble(Console.ReadLine());
 
+			Console.Write("What is your Payment on the Previous Balance: $");
+			paymtonPrevBal = Convert.ToDouble(Console.ReadLine());
 
+			altprevBal = previousBalance;
+		    altpaymtonPrevBal = paymtonPrevBal;
+	}
 
 
 		public static double balBroughtForward()
@@ -51,11 +67,32 @@ namespace Timbuktu_Communications_Limited
 
 		public double varearlyPaymtDiscount;
 
-		
+
+		public void getAccHolderDetails()
+		{
+           
+
+			// Prompt the user to enter their  details
+			Console.WriteLine("Please Enter your Account Details:");
+			Console.WriteLine();
+			Console.Write("Your Account Number: ");
+		    accNum = Console.ReadLine(); 
+			Console.Write("Your Account Holder Name (Enter First Name then Last Name): ");
+			string accHoldernameFirst = Console.ReadLine();
+			string accHoldernameLast = Console.ReadLine();
+
+            Console.WriteLine();
+
+
+            // Combine the address components into a single string
+            accFirst_Lastconcat = $"{accHoldernameFirst} {accHoldernameLast}";
+
+		}
+
 		public void getAccHolderAddress()
 		{
-			// Variable to store the address as a single string
-			string accHolderAddress;
+			
+			
 
 			// Prompt the user to enter the address details
 			Console.WriteLine("Enter Address Details:");
@@ -69,7 +106,7 @@ namespace Timbuktu_Communications_Limited
 			string postalCode = Console.ReadLine();
 
 			// Combine the address components into a single string
-			accHolderAddress = $"{street}, {city}, {parish} {postalCode}";
+			 accHolderAddress = $"{street}, {city}, {parish} {postalCode}";
 
 
 		}
@@ -101,19 +138,19 @@ namespace Timbuktu_Communications_Limited
 		{
 			if (varlatePaymtFees == 250.0)
 			{
-				Console.WriteLine(" \nPayment made after or on the due date. Late payment fees applied...");
+				Console.WriteLine("\nPayment made after or on the due date. Late payment fees applied...");
 			}
 			else if (varlatePaymtFees == 0)
 			{
-				Console.WriteLine(" \nPayment made before the due date. No Late payment fees applied.");
+				Console.WriteLine("\nPayment made before the due date. No Late payment fees applied.");
 			}
 			if (varearlyPaymtDiscount == 250)
 			{
-				Console.WriteLine(" \n \x1b[1mApplying early payment discount... \x1b[0m");
+				Console.WriteLine("\n\x1b[1mApplying early payment discount... \x1b[0m");
 			}
 			else if (varearlyPaymtDiscount == 0)
 			{
-				Console.WriteLine(" \n \x1b[1mNo early payment discount applied.\x1b[0m");
+				Console.WriteLine("\n\x1b[1mNo early payment discount applied.\x1b[0m");
 			}
 		}
 			
@@ -144,7 +181,7 @@ namespace Timbuktu_Communications_Limited
         //Calculation Functions 
         public double CableandDigitalCharge()
         {
-            return(CableTeleOnly+(DigitalLandOnly*70/100));
+            return (CableTeleOnly+(DigitalLandOnly*70/100));
         }
         public double CableandInterServCharge()
         {

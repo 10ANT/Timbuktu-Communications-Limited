@@ -2,6 +2,7 @@
 using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
 using Timbuktu_Communications_Limited;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 public class TimbuktuCom
 {
@@ -9,7 +10,9 @@ public class TimbuktuCom
 
 	private static void Main(string[] args)
     {
-		Console.WriteLine("Select the type of customer you are:");
+		Console.WriteLine("\x1b[1mWelcome to Timbuktu's Bill Processing Platform \x1b[0m");
+        Console.WriteLine();
+        Console.WriteLine("Select the type of customer that you are:");
 		Console.WriteLine("1. Cable Television Only");
 		Console.WriteLine("2. Digital Landline Only");
 		Console.WriteLine("3. Internet service Only");
@@ -24,8 +27,17 @@ public class TimbuktuCom
 			case 1:
 				
 				customer1 = new CableTeleBill();
-				dateCollectandParsePreviouspaymt();
-				dateCollectandParseCurDuepaymt();
+
+
+				customer1.getAccHolderDetails();
+				customer1.getAccHolderAddress();
+
+				customer1.collectPreviousBalandPayment();
+
+                Console.WriteLine();
+
+               // dateCollectandParsePreviouspaymt();
+				//dateCollectandParseCurDuepaymt();
 
 				customer1.earlyPaymtDiscount();
 				customer1.latePaymtFees();
@@ -33,7 +45,21 @@ public class TimbuktuCom
 
 				customer1.lateorearlystatus();
 				customer1.totAmtDuteBefTax();
-				Console.WriteLine(customer1.vartotAmtDueBefTax);
+
+				//Outputs
+				Console.WriteLine();
+
+				Console.WriteLine("Your Account Number is: "+customer1.accNum+"");
+				Console.WriteLine("Your Account Holder Name is: " + customer1.accFirst_Lastconcat + "");
+				Console.WriteLine("Your Account Holder Address is: " + customer1.accHolderAddress + "");
+				//Specific Service Type 
+				Console.WriteLine("Your Account Service type is: Cable Television Only");
+				Console.WriteLine("Your Previous Balance is: " + customer1.altprevBal.ToString("F2"));
+				Console.WriteLine("Your Payment on the Previous Balance is: " + customer1.altpaymtonPrevBal.ToString("F2"));
+
+
+
+				Console.WriteLine($"${customer1.vartotAmtDueBefTax:0.00}");
 				Console.WriteLine(customer1.vartotAmtDue);
 
 				break;
